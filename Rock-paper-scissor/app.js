@@ -1,93 +1,94 @@
+// Select HTML elements
 const computerChoiceDisplay = document.getElementById('computer-choice');
 const userChoiceDisplay = document.getElementById('user-choice');
 const resultDisplay = document.getElementById('result');
 const userScoreDisplay = document.getElementById('user-score');
 const computerScoreDisplay = document.getElementById('computer-score');
-const roundDisplay = document.getElementById('round');
-const restartButton = document.getElementById('restart');
-const possibleChoices = document.querySelectorAll('button:not(#restart)');
+const resetButton = document.getElementById('reset');
+const choices = document.querySelectorAll('.choices button');
 
+// Variables for scores
+let userScore = 0;
+let computerScore = 0;
 let userChoice;
 let computerChoice;
 let result;
-let userScore = 0;
-let computerScore = 0;
-let round = 1;
 
-// Event listener for choices
-possibleChoices.forEach(choice =>
-  choice.addEventListener('click', e => {
+// Event listener for player choices
+choices.forEach(choice => {
+  choice.addEventListener('click', (e) => {
     userChoice = e.target.id;
-    userChoiceDisplay.innerHTML = userChoice;
+    userChoiceDisplay.innerHTML = e.target.innerHTML; // Add emojis
+    userChoiceDisplay.classList.add('animated');
+    setTimeout(() => userChoiceDisplay.classList.remove('animated'), 500);
+
     generateComputerChoice();
     getResult();
-    updateScores();
-    checkGameOver();
-  })
-);
+  });
+});
 
-// Generate random computer choice
+// Generate computer's random choice
 function generateComputerChoice() {
-  const randomNumber = Math.floor(Math.random() * 3); // 0, 1, 2
-  const choices = ['rock', 'paper', 'scissors'];
-  computerChoice = choices[randomNumber];
-  computerChoiceDisplay.innerHTML = computerChoice;
+  const randomNumber = Math.floor(Math.random() * 3); // 0, 1, or 2
+  switch (randomNumber) {
+    case 0:
+      computerChoice = 'rock';
+      computerChoiceDisplay.innerHTML = '🪨 Rock';
+      break;
+    case 1:
+      computerChoice = 'paper';
+      computerChoiceDisplay.innerHTML = '📄 Paper';
+      break;
+    case 2:
+      computerChoice = 'scissors';
+      computerChoiceDisplay.innerHTML = '✂️ Scissors';
+      break;
+  }
+  computerChoiceDisplay.classList.add('animated');
+  setTimeout(() => computerChoiceDisplay.classList.remove('animated'), 500);
 }
 
-// Determine result
+// Determine the result of the game
 function getResult() {
-  if (computerChoice === userChoice) {
-    result = "It's a draw!";
+  if (userChoice === computerChoice) {
+    result = 'It\'s a draw!';
   } else if (
-    (computerChoice === 'rock' && userChoice === 'scissors') ||
-    (computerChoice === 'scissors' && userChoice === 'paper') ||
-    (computerChoice === 'paper' && userChoice === 'rock')
+    (userChoice === 'rock' && computerChoice === 'scissors') ||
+    (userChoice === 'scissors' && computerChoice === 'paper') ||
+    (userChoice === 'paper' && computerChoice === 'rock')
   ) {
-    result = 'You lost!';
-    computerScore++;
-  } else {
     result = 'You win!';
     userScore++;
+    highlight('user');
+  } else {
+    result = 'You lose!';
+    computerScore++;
+    highlight('computer');
   }
+
   resultDisplay.innerHTML = result;
+  userScoreDisplay.innerText = userScore;
+  computerScoreDisplay.innerText = computerScore;
 }
 
-// Update scores and round
-function updateScores() {
-  userScoreDisplay.innerHTML = userScore;
-  computerScoreDisplay.innerHTML = computerScore;
-  round++;
-  roundDisplay.innerHTML = round;
-}
-
-// Check if game is over
-function checkGameOver() {
-  if (round > 5) {
-    const finalResult =
-      userScore > computerScore
-        ? 'Congratulations! You won the game!'
-        : userScore < computerScore
-        ? 'Sorry, you lost the game!'
-        : "It's a draw!";
-    resultDisplay.innerHTML = finalResult;
-
-    // Disable buttons after game over
-    possibleChoices.forEach(choice => (choice.disabled = true));
+// Highlight the winning choice
+function highlight(winner) {
+  if (winner === 'user') {
+    userChoiceDisplay.classList.add('highlight');
+    setTimeout(() => userChoiceDisplay.classList.remove('highlight'), 1000);
+  } else {
+    computerChoiceDisplay.classList.add('highlight');
+    setTimeout(() => computerChoiceDisplay.classList.remove('highlight'), 1000);
   }
 }
 
-// Restart the game
-restartButton.addEventListener('click', () => {
+// Reset the game
+resetButton.addEventListener('click', () => {
   userScore = 0;
   computerScore = 0;
-  round = 1;
-  userScoreDisplay.innerHTML = userScore;
-  computerScoreDisplay.innerHTML = computerScore;
-  roundDisplay.innerHTML = round;
-  resultDisplay.innerHTML = '';
   userChoiceDisplay.innerHTML = '';
   computerChoiceDisplay.innerHTML = '';
-
-  // Re-enable buttons
-  possibleChoices.forEach(choice => (choice.disabled = false));
+  resultDisplay.innerHTML = '';
+  userScoreDisplay.innerText = userScore;
+  computerScoreDisplay.innerText = computerScore;
 });
