@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Rock Paper Scissors</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .scoreboard {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+      #restart {
+        background-color: #ff4c4c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+    <h2>Computer Choice: <span id="computer-choice"></span></h2>
+    <h2>Your Choice: <span id="user-choice"></span></h2>
+    <h2>Result: <span id="result"></span></h2>
+
+    <button id="rock">rock</button>
+    <button id="paper">paper</button>
+    <button id="scissors">scissors</button>
+
+    <div class="scoreboard">
+      <h2>Scores:</h2>
+      <p>User: <span id="user-score">0</span></p>
+      <p>Computer: <span id="computer-score">0</span></p>
+      <p>Round: <span id="round">1</span>/5</p>
+    </div>
+
+    <button id="restart">Restart</button>
+
+    <script src="app.js" charset="utf-8"></script>
+  </body>
+</html>
